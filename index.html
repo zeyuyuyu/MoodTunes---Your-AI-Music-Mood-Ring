@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoodTunes - Your AI Music Mood Ring</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1e2030, #2d325a);
+            color: white;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            max-width: 600px;
+            text-align: center;
+            padding: 20px;
+        }
+        .mood-ring {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin: 20px auto;
+            position: relative;
+            background: conic-gradient(from 0deg, #ff6b6b, #4ecdc4, #45b7d1, #96c93d);
+            animation: rotate 10s linear infinite;
+            cursor: pointer;
+        }
+        .mood-ring:hover {
+            transform: scale(1.05);
+            transition: transform 0.3s ease;
+        }
+        .camera-input {
+            display: none;
+        }
+        .mood-text {
+            font-size: 24px;
+            margin: 20px 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .playlist {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .share-btn {
+            background: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>MoodTunes</h1>
+        <p>Tap the mood ring to take a selfie and discover your musical mood!</p>
+        
+        <div class="mood-ring" id="moodRing" onclick="activateCamera()"></div>
+        <input type="file" accept="image/*" capture="user" class="camera-input" id="cameraInput">
+        
+        <div class="mood-text" id="moodText">Take a photo to detect your mood</div>
+        
+        <div class="playlist" id="playlist">
+            <h3>Your Mood Playlist</h3>
+            <div id="playlistTracks"></div>
+        </div>
+        
+        <button class="share-btn" onclick="shareMood()">Share My Mood</button>
+    </div>
+
+    <script>
+        let currentMood = '';
+        const moods = ['Happy', 'Relaxed', 'Energetic', 'Melancholic'];
+        const mockPlaylists = {
+            'Happy': ['Walking on Sunshine', 'Happy - Pharrell Williams', 'Good Vibrations'],
+            'Relaxed': ['Weightless - Marconi Union', 'Ocean Waves', 'Peaceful Piano'],
+            'Energetic': ['Uptown Funk', 'Can't Stop the Feeling', 'Shake It Off'],
+            'Melancholic': ['Someone Like You', 'The Sound of Silence', 'Yesterday']
+        };
+
+        function activateCamera() {
+            document.getElementById('cameraInput').click();
+        }
+
+        document.getElementById('cameraInput').addEventListener('change', function(e) {
+            if (e.target.files && e.target.files[0]) {
+                // Simulate mood detection
+                detectMood();
+            }
+        });
+
+        function detectMood() {
+            // Simulate AI processing
+            const loadingStates = ['Analyzing expression...', 'Detecting emotions...', 'Generating playlist...'];
+            let i = 0;
+            const moodText = document.getElementById('moodText');
+            
+            const loadingInterval = setInterval(() => {
+                moodText.textContent = loadingStates[i];
+                i++;
+                if (i >= loadingStates.length) {
+                    clearInterval(loadingInterval);
+                    currentMood = moods[Math.floor(Math.random() * moods.length)];
+                    updateMoodDisplay();
+                }
+            }, 1000);
+        }
+
+        function updateMoodDisplay() {
+            document.getElementById('moodText').textContent = `You're feeling: ${currentMood}`;
+            updatePlaylist();
+        }
+
+        function updatePlaylist() {
+            const tracks = mockPlaylists[currentMood];
+            const playlistHtml = tracks.map(track => 
+                `<div style="padding: 10px; background: rgba(255,255,255,0.05); margin: 5px; border-radius: 5px;">${track}</div>`
+            ).join('');
+            document.getElementById('playlistTracks').innerHTML = playlistHtml;
+        }
+
+        function shareMood() {
+            if (!currentMood) return;
+            const text = `🎵 My mood is ${currentMood} and MoodTunes created the perfect playlist for me! Check it out at moodtunes.app`;
+            if (navigator.share) {
+                navigator.share({
+                    title: 'My MoodTunes Playlist',
+                    text: text,
+                    url: 'https://moodtunes.app'
+                });
+            } else {
+                alert('Share this: ' + text);
+            }
+        }
+    </script>
+</body>
+</html>
