@@ -4,98 +4,113 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MoodTunes - Your AI Music Mood Ring</title>
-    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-    <style>
-        @keyframes pulse-glow {
-            0% { box-shadow: 0 0 5px #4F46E5; }
-            50% { box-shadow: 0 0 20px #4F46E5; }
-            100% { box-shadow: 0 0 5px #4F46E5; }
-        }
-        .mood-ring {
-            animation: pulse-glow 2s infinite;
-        }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 </head>
-<body class="bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 min-h-screen text-white">
+<body class="bg-gradient-to-r from-purple-900 via-purple-700 to-pink-600 min-h-screen">
     <div class="container mx-auto px-4 py-8">
-        <h1 class="text-4xl font-bold text-center mb-8">MoodTunes 🎵</h1>
+        <h1 class="text-4xl font-bold text-white text-center mb-8 animate__animated animate__pulse animate__infinite">MoodTunes</h1>
         
-        <div class="max-w-md mx-auto bg-white/10 backdrop-blur-lg rounded-xl p-6 space-y-6">
-            <!-- Mood Ring Visualizer -->
-            <div class="mood-ring h-48 w-48 mx-auto rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center text-xl font-bold"></div>
-            
-            <!-- Social Share Section -->
-            <div class="text-center">
-                <p class="text-xl mb-4">Your Mood Today: <span id="moodText" class="font-bold">✨ Dreamy ✨</span></p>
-                <button onclick="shareMood()" class="bg-indigo-600 hover:bg-indigo-700 px-6 py-2 rounded-full transition-all transform hover:scale-105">
-                    Share My Mood 🚀
-                </button>
+        <!-- Mood Ring Visualizer -->
+        <div class="relative w-64 h-64 mx-auto mb-8">
+            <div id="moodRing" class="absolute inset-0 rounded-full shadow-2xl animate__animated animate__pulse" style="background: conic-gradient(from 0deg, #FF0000, #00FF00, #0000FF, #FF0000);"></div>
+            <div class="absolute inset-0 flex items-center justify-center">
+                <span id="currentMood" class="text-white text-2xl font-bold">😊</span>
             </div>
+        </div>
 
-            <!-- Streak Counter -->
-            <div class="text-center bg-white/5 rounded-lg p-4">
-                <p class="text-sm">🔥 Mood Streak</p>
-                <p class="text-3xl font-bold" id="streakCount">7 Days</p>
+        <!-- Social Features -->
+        <div class="bg-white bg-opacity-10 rounded-lg p-4 mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <span class="text-white">🔥 Trending Moods</span>
+                <span class="text-white text-sm">238k sharing now</span>
             </div>
-
-            <!-- Daily Challenge -->
-            <div class="bg-white/5 rounded-lg p-4">
-                <h3 class="text-center font-bold mb-2">🎯 Daily Challenge</h3>
-                <p class="text-sm text-center">Share your mood with 3 friends to unlock today's exclusive playlist!</p>
-                <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
-                    <div class="bg-indigo-600 h-2.5 rounded-full" style="width: 66%"></div>
-                </div>
-            </div>
-
-            <!-- Friend Activity Feed -->
-            <div class="space-y-2">
-                <h3 class="font-bold">👥 Friend Activity</h3>
-                <div class="bg-white/5 rounded-lg p-3 flex items-center space-x-3">
-                    <div class="w-10 h-10 rounded-full bg-indigo-500"></div>
-                    <div>
-                        <p class="font-bold">Sarah K.</p>
-                        <p class="text-sm">Feeling Energetic 🎵</p>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-white bg-opacity-20 rounded p-3 text-white cursor-pointer hover:bg-opacity-30 transition">
+                    <div class="flex items-center justify-between">
+                        <span>😌 Chill Vibes</span>
+                        <span class="text-sm">+42k</span>
                     </div>
                 </div>
+                <div class="bg-white bg-opacity-20 rounded p-3 text-white cursor-pointer hover:bg-opacity-30 transition">
+                    <div class="flex items-center justify-between">
+                        <span>🎉 Party Mode</span>
+                        <span class="text-sm">+38k</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mood Challenge -->
+        <div class="bg-white bg-opacity-10 rounded-lg p-4 mb-8 animate__animated animate__fadeIn">
+            <h3 class="text-white text-xl mb-4">🎯 Daily Mood Challenge</h3>
+            <div class="bg-white bg-opacity-20 rounded p-4">
+                <p class="text-white mb-2">Match your mood with friends and win rewards!</p>
+                <div class="flex justify-between items-center">
+                    <div class="flex space-x-2">
+                        <img src="https://i.pravatar.cc/40?img=1" class="rounded-full w-8 h-8">
+                        <img src="https://i.pravatar.cc/40?img=2" class="rounded-full w-8 h-8">
+                        <img src="https://i.pravatar.cc/40?img=3" class="rounded-full w-8 h-8">
+                    </div>
+                    <button class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600 transition">Join Challenge</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mood Streaks -->
+        <div class="bg-white bg-opacity-10 rounded-lg p-4">
+            <div class="flex items-center justify-between mb-4">
+                <span class="text-white">🔥 Your Streak: 7 days</span>
+                <span class="text-white text-sm">Next reward in: 3 days</span>
+            </div>
+            <div class="grid grid-cols-7 gap-2">
+                <div class="h-2 bg-pink-500 rounded"></div>
+                <div class="h-2 bg-pink-500 rounded"></div>
+                <div class="h-2 bg-pink-500 rounded"></div>
+                <div class="h-2 bg-pink-500 rounded"></div>
+                <div class="h-2 bg-pink-500 rounded"></div>
+                <div class="h-2 bg-pink-500 rounded"></div>
+                <div class="h-2 bg-pink-500 rounded"></div>
             </div>
         </div>
     </div>
 
     <script>
-        let streakCount = 7;
-        let shareCount = 0;
+        // Simulate mood changes
+        const moods = ['😊', '😢', '😡', '😴', '🥳', '😎', '🤔'];
+        const moodRing = document.getElementById('moodRing');
+        const currentMood = document.getElementById('currentMood');
 
-        function shareMood() {
-            shareCount++;
-            // Simulate viral sharing mechanics
-            const shareText = `🎵 My mood today is ✨Dreamy✨ - Find your music mood at MoodTunes! 🎧`;
-            if (navigator.share) {
-                navigator.share({
-                    title: 'MoodTunes',
-                    text: shareText,
-                    url: window.location.href
-                });
-            }
-
-            // Reward animation
-            const ring = document.querySelector('.mood-ring');
-            ring.style.transform = 'scale(1.1)';
-            setTimeout(() => ring.style.transform = 'scale(1)', 200);
-
-            // Update streak if shared
-            if (shareCount === 3) {
-                streakCount++;
-                document.getElementById('streakCount').textContent = `${streakCount} Days`;
-                alert('🎉 Congratulations! You've unlocked today\'s exclusive playlist!');
-            }
-        }
-
-        // Add random mood changes to make the ring feel alive
         setInterval(() => {
-            const ring = document.querySelector('.mood-ring');
+            const randomMood = moods[Math.floor(Math.random() * moods.length)];
+            currentMood.textContent = randomMood;
             const hue = Math.random() * 360;
-            ring.style.background = `linear-gradient(45deg, hsl(${hue}, 70%, 50%), hsl(${hue + 60}, 70%, 50%))`;
+            moodRing.style.background = `conic-gradient(from ${hue}deg, 
+                hsl(${hue}, 100%, 50%), 
+                hsl(${(hue + 120) % 360}, 100%, 50%), 
+                hsl(${(hue + 240) % 360}, 100%, 50%), 
+                hsl(${hue}, 100%, 50%))`;
         }, 3000);
+
+        // Add social proof notifications
+        setInterval(() => {
+            const notification = document.createElement('div');
+            notification.className = 'fixed bottom-4 left-4 bg-white bg-opacity-90 rounded-lg p-3 animate__animated animate__fadeInUp';
+            notification.innerHTML = `
+                <div class="flex items-center space-x-2">
+                    <img src="https://i.pravatar.cc/30?img=${Math.floor(Math.random() * 70)}" class="rounded-full">
+                    <div class="text-sm">
+                        <p class="text-gray-800">Someone just matched their mood!</p>
+                        <p class="text-gray-600 text-xs">2s ago</p>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(notification);
+            setTimeout(() => {
+                notification.classList.replace('animate__fadeInUp', 'animate__fadeOutDown');
+                setTimeout(() => notification.remove(), 1000);
+            }, 3000);
+        }, 5000);
     </script>
 </body>
 </html>
